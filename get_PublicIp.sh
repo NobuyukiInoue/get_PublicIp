@@ -10,8 +10,6 @@ echo "Target InstanceId: $InstanceId"
 
 result=`aws ec2 describe-instances`
 
-check_Linux=false
-check_Instance=false
 check_PublicIp=false
 
 while read line
