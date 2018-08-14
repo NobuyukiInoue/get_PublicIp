@@ -14,6 +14,19 @@ check_PublicIp=false
 
 while read line
 do
+  if [[ $line =~ ^\"PublicIpAddress\"\: ]]; then
+    if $check_PublicIp ; then
+      $check_PulicIp=false
+      break
+    fi
+
+    PublicIp=${line#\"PublicIpAddress\"\: }
+    PublicIp=${PublicIp#\"}
+    PublicIp=${PublicIp%,}
+    PublicIp=${PublicIp%\"}
+    check_PublicIp=true
+  fi
+
   if $check_PublicIp ; then
     if [[ $line =~ ^\"InstanceId\"\: ]]; then
       if [[ $line =~ \"$InstanceId\" ]]; then
@@ -24,15 +37,6 @@ do
       fi
     fi
   fi
-
-  if [[ $line =~ ^\"PublicIpAddress\"\: ]]; then
-    PublicIp=${line#\"PublicIpAddress\"\: }
-    PublicIp=${PublicIp#\"}
-    PublicIp=${PublicIp%,}
-    PublicIp=${PublicIp%\"}
-    check_PublicIp=true
-  fi
-
 done << FILE
 $result
 FILE

@@ -18,6 +18,11 @@ for ($i = 0; $i -lt $res.Length; $i++) {
     ## PublicIpAddress‚Ì’l‚ðŽæ“¾‚·‚é
     ##--------------------------------------------------------------##
     if ($res[$i].IndexOf("`"PublicIpAddress`":") -ge 0) {
+        if ($Check_publicIp -eq $TRUE) {
+            $Check_publicIp = $FALSE
+            continue
+        }
+
         $workStr = $res[$i].Replace(" ","").Replace("`"","").Replace(",","").split(":")
         if ($workStr.Length -gt 0) {
             $publicIpStr = $workStr[1]
